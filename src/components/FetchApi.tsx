@@ -18,7 +18,14 @@ const FetchApi: React.FC = () => {
             }
         };
 
+        // Fetch weather data initially
         fetchWeatherData();
+
+        // Set up an interval to update weather data every few minutes (adjust as needed)
+        const intervalId = setInterval(fetchWeatherData, 300000); // 5 minutes (5 * 60 * 1000 milliseconds)
+
+        // Cleanup the interval when the component unmounts
+        return () => clearInterval(intervalId);
     }, []);
 
     const kelvinToFahrenheit = (kelvin: number) => {
