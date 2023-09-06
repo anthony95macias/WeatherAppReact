@@ -1,25 +1,23 @@
 import React, { useEffect, useState } from 'react';
 
 const FetchApi: React.FC = () => {
-    const [timeData, setTimeData] = useState<any>(null);
+    const [currentTime, setCurrentTime] = useState<string>('');
 
     useEffect(() => {
-        const apiUrl = 'http://worldtimeapi.org/api/timezone/America/Los_Angeles';
-
-        const fetchTimeData = async () => {
-            try {
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-                setTimeData(data);
-            } catch (error) {
-                console.error('Error fetching time data:', error);
-            }
+        const fetchTimeData = () => {
+            const now = new Date();
+            const formattedTime = now.toLocaleTimeString('en-US', {
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+            });
+            setCurrentTime(formattedTime);
         };
 
-        // Fetch time data initially
+        // Fetch the initial time
         fetchTimeData();
 
-        // Set up an interval to fetch time data every second (adjust as needed)
+        // Set up an interval to update the time every second (adjust as needed)
         const intervalId = setInterval(fetchTimeData, 1000);
 
         // Cleanup the interval when the component unmounts
@@ -28,13 +26,8 @@ const FetchApi: React.FC = () => {
 
     return (
         <div>
-            <h1>Current Time in California</h1>
-            {timeData && (
-                <div>
-                    <p>Time Zone: {timeData.timezone}</p>
-                    <p>Current Time: {timeData.datetime}</p>
-                </div>
-            )}
+            <h>Current Time in California</h>
+            <p>{currentTime}</p>
         </div>
     );
 };
